@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/newback"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".LoginActivity">
+
+    <!-- Logo -->
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="40dp"
+        android:contentDescription="Logo Lamp"
+        android:src="@drawable/logo_lamp" />
+
+    <!-- Texto de introdução -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="Precisando de uma recomendação? Temos várias para você"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Formulário de Login -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/rounded"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Título de descrição -->
+        <TextView
+            android:id="@+id/loginDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Faça o seu login"
+            android:textColor="#000000"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!-- Campo de email -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailLoginLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:startIconDrawable="@drawable/ic_alternative_email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailLoginField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="text|textEmailAddress"
+                android:textColor="#000000"
+                android:textColorHint="#B0B0B0" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo de senha -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordLoginLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_lock_gray">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordLoginField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite a sua senha"
+                android:inputType="textPassword"
+                android:textColor="#000000"
+                android:textColorHint="#B0B0B0" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Checkbox Lembrar conta -->
+        <CheckBox
+            android:id="@+id/rememberMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/passwordLoginLayout"
+            android:layout_marginTop="5dp"
+            android:buttonTint="#6690B1"
+            android:text="Lembrar conta?"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+
+        <!-- Botão de login -->
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#6690B1"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="Entrar na conta"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+
+        <!-- Texto de inscrição -->
+        <TextView
+            android:id="@+id/signUpText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="Não tem conta? Crie aqui"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>
