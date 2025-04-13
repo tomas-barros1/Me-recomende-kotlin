@@ -18,7 +18,7 @@
             android:name=".ParametersActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileAndChoseActivity"
+            android:name=".ProfileAndChooseActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"

@@ -2,7 +2,6 @@ package com.merecomende
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.merecomende.databinding.ActivityParametersBinding
@@ -18,7 +17,7 @@ class ParametersActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.backToProfile.setOnClickListener {
-            val intent = Intent(this, ProfileAndChoseActivity::class.java)
+            val intent = Intent(this, ProfileAndChooseActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -26,11 +25,10 @@ class ParametersActivity : AppCompatActivity() {
         binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
             val radioButton = findViewById<android.widget.RadioButton>(checkedId)
             radioButton?.let {
-                val escolha = it.text.toString()
-                Log.d("ParametersActivity1", "Escolha do usuário: $escolha")
+                val choice = it.text.toString()
 
                 val intent = Intent(this, RecomendationActivity::class.java)
-                intent.putExtra("escolha", escolha)
+                intent.putExtra("choice", choice)
                 startActivity(intent)
                 finish()
             }

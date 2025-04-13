@@ -1,5 +1,6 @@
 package com.merecomende
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -16,64 +17,79 @@ class RecomendationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecomendationBinding
     private lateinit var database: DatabaseReference
-    private var generoEscolhido: String? = null
+    private var chosenGenre: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecomendationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        generoEscolhido = intent.getStringExtra("escolha")
+        chosenGenre = intent.getStringExtra("choice")
 
-        generoEscolhido?.let {
-            buscarFilmePorGenero(it)
+        chosenGenre?.let {
+            findMovieByGenre(it)
         } ?: run {
             Toast.makeText(this, "Gênero não selecionado", Toast.LENGTH_SHORT).show()
         }
 
         binding.returnButton.setOnClickListener {
-            finish()
+            startActivity(Intent(this, ParametersActivity::class.java))
         }
 
     }
 
-    private fun buscarFilmePorGenero(genero: String) {
+    private fun findMovieByGenre(genre: String) {
         binding.progressBar.visibility = View.VISIBLE
-        database = FirebaseDatabase.getInstance().getReference("filmes")
+        database = FirebaseDatabase.getInstance().getReference("movies")
 
         database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 binding.progressBar.visibility = View.GONE
 
-                val filmesFiltrados = mutableListOf<DataSnapshot>()
+                val filteredMovies = mutableListOf<DataSnapshot>()
 
                 for (filmeSnapshot in snapshot.children) {
-                    val gender = filmeSnapshot.child("gender").getValue(String::class.java)
-                    if (gender.equals(genero, ignoreCase = true)) {
-                        filmesFiltrados.add(filmeSnapshot)
+                    val gender = filmeSnapshot.child("genre").getValue(String::class.java)
+                    if (gender.equals(genre, ignoreCase = true)) {
+                        filteredMovies.add(filmeSnapshot)
                     }
                 }
 
-                if (filmesFiltrados.isNotEmpty()) {
-                    val filmeAleatorio = filmesFiltrados[Random.nextInt(filmesFiltrados.size)]
+                if (filteredMovies.isNotEmpty()) {
+                    val randomMovie = filteredMovies[Random.nextInt(filteredMovies.size)]
 
                     val title =
-                        filmeAleatorio.child("title").getValue(String::class.java) ?: "Sem título"
-                    val imdb =
-                        filmeAleatorio.child("imdb").getValue(String::class.java) ?: "Sem nota"
-                    val rating = filmeAleatorio.child("rating").getValue(String::class.java)
-                        ?: "Sem classificação"
+                        randomMovie.child("title").getValue(String::class.java) ?: "Sem título"
+                    val imdb = randomMovie.child("imdb").getValue(String::class.java) ?: "Sem nota"
+                    val rating =
+                        randomMovie.child("rating").getValue(Double::class.java)?.toString()
+                            ?: "Sem classificação"
                     val release =
-                        filmeAleatorio.child("release").getValue(String::class.java) ?: "Sem data"
-                    var gender =
-                        filmeAleatorio.child("gender").getValue(String::class.java) ?: "Sem gênero"
+                        randomMovie.child("release").getValue(Long::class.java)?.toString()
+                            ?: "Sem data"
+                    val gender =
+                        randomMovie.child("genre").getValue(String::class.java) ?: "Sem gênero"
 
-                    // Exibir na interface
-                    binding.txtRecommendedTitle.text = "Título: $title"
-                    binding.txtRecommendedImdb.text = "IMDb: $imdb"
-                    binding.txtRecommendedRating.text = "Classificação: $rating"
-                    binding.txtRecommendedRelease.text = "Lançamento: $release"
-                    binding.txtRecommendedGender.text = "Gênero: $gender"
+                    binding.txtRecommendedTitle.text = buildString {
+                        append("Título: ")
+                        append(title)
+                    }
+                    binding.txtRecommendedImdb.text = buildString {
+                        append("IMDb: ")
+                        append(imdb)
+                    }
+                    binding.txtRecommendedRating.text = buildString {
+                        append("Classificação: ")
+                        append(rating)
+                    }
+                    binding.txtRecommendedRelease.text = buildString {
+                        append("Lançamento: ")
+                        append(release)
+                    }
+                    binding.txtRecommendedGender.text = buildString {
+                        append("Gênero: ")
+                        append(gender)
+                    }
                 }
             }
 

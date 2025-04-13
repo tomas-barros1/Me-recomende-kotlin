@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.merecomende.databinding.RegisterActivityBinding
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: RegisterActivityBinding
-
+    private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +19,8 @@ class RegisterActivity : AppCompatActivity() {
 
         binding = RegisterActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        database = FirebaseDatabase.getInstance()
 
         auth = FirebaseAuth.getInstance()
 
@@ -53,13 +56,14 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        registerUser(email, password)
+        registerUser(email, password, username)
     }
 
-    private fun registerUser(email: String, password: String) {
+    private fun registerUser(email: String, password: String, username: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    sendToRealtimeDatabase(username, email)
                     auth.currentUser
                     Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT)
                         .show()
@@ -73,4 +77,19 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
     }
+
+    private fun sendToRealtimeDatabase(username: String, email: String) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            val userRef = database.getReference("users").child(userId)
+
+            val userMap = mapOf(
+                "username" to username,
+                "email" to email
+            )
+
+            userRef.setValue(userMap)
+        }
+    }
+
 }

@@ -21,7 +21,6 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // 1) Recupera as prefs
         val sharedPref = getSharedPreferences("LoginPrefs", MODE_PRIVATE)
         val rememberMe = sharedPref.getBoolean("rememberMe", false)
         val savedEmail = sharedPref.getString("email", "")
@@ -83,11 +82,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginUser(email: String, password: String) {
+    fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    startActivity(Intent(this, ProfileAndChoseActivity::class.java))
+                    startActivity(Intent(this, ProfileAndChooseActivity::class.java))
                     finish()
                 } else {
                     Toast.makeText(
